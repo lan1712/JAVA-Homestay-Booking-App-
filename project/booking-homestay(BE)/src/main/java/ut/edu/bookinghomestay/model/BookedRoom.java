@@ -18,18 +18,18 @@ public class BookedRoom {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
     private Long bookingId;
-    @Column(name = "check_In")
+
+    @Column(name = "check_in")
     private LocalDate checkInDate;
 
-    @Column(name = "check_Out")
+    @Column(name = "check_out")
     private LocalDate checkOutDate;
 
-    @Column(name = "guest_FullName")
+    @Column(name = "guest_fullName")
     private String guestFullName;
 
-    @Column(name = "guest_Email")
+    @Column(name = "guest_email")
     private String guestEmail;
 
     @Column(name = "adults")
@@ -39,9 +39,9 @@ public class BookedRoom {
     private int NumOfChildren;
 
     @Column(name = "total_guest")
-    private int totalNumOfGuests;
+    private int totalNumOfGuest;
 
-    @Column(name = "confimation_Code")
+    @Column(name = "confirmation_Code")
     private String bookingConfirmationCode;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -49,7 +49,7 @@ public class BookedRoom {
     private Room room;
 
     public void calculateTotalNumOfGuests() {
-        this.totalNumOfGuests = this.NumOfAdults + this.NumOfChildren ;
+        this.totalNumOfGuest = this.NumOfAdults + this.NumOfChildren ;
     }
 
     public void setNumOfAdults(int numOfAdults) {
