@@ -11,5 +11,4 @@ public class HomestayRequest {
     private String description;
     private BigDecimal price;
     private String imageUrl;
-    private Long ownerId;
 }

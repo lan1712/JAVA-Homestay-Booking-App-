@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en" data-bs-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Booking Homestay</title>
+    <link rel="stylesheet" href="/assets/vendor/css/core.css">
+    <link rel="stylesheet" href="/assets/css/demo.css">
+    <link rel="stylesheet" href="/assets/vendor/libs/apex-charts/apex-charts.css">
+</head>
+<body>
+<div class="container py-4">
+    <h3 class="mb-4">Tổng quan hệ thống</h3>
+    <div class="row g-4">
+        <!-- Tổng người dùng -->
+        <div class="col-md-4">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h5 class="card-title">Người dùng</h5>
+                    <p class="fs-2 fw-bold text-primary">[[${totalUsers}]]</p>
+                </div>
+            </div>
+        </div>
+        <!-- Tổng Homestay -->
+        <div class="col-md-4">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h5 class="card-title">Homestay</h5>
+                    <p class="fs-2 fw-bold text-success">[[${totalHomestays}]]</p>
+                </div>
+            </div>
+        </div>
+        <!-- Tổng đơn đặt phòng -->
+        <div class="col-md-4">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h5 class="card-title">Đơn đặt phòng</h5>
+                    <p class="fs-2 fw-bold text-warning">[[${totalBookings}]]</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- JavaScript -->
+<script src="/assets/vendor/libs/jquery/jquery.js"></script>
+<script src="/assets/vendor/js/bootstrap.js"></script>
+<script src="/assets/vendor/libs/apex-charts/apexcharts.js"></script>
+<script src="/assets/js/main.js"></script>
+</body>
+</html>

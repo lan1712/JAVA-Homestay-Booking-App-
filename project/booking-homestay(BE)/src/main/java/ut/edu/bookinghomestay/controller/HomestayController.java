@@ -30,18 +30,15 @@ public class HomestayController {
 
     @PostMapping
     public ResponseEntity<?> create(@RequestBody HomestayRequest request) {
-        User owner = userRepository.findById(request.getOwnerId())
-                .orElseThrow(() -> new RuntimeException("Không tìm thấy owner"));
-
         Homestay homestay = Homestay.builder()
                 .name(request.getName())
                 .location(request.getLocation())
                 .description(request.getDescription())
                 .price(request.getPrice())
                 .imageUrl(request.getImageUrl())
-                .owner(owner)
                 .build();
 
         return ResponseEntity.ok(homestayRepository.save(homestay));
     }
+
 }
