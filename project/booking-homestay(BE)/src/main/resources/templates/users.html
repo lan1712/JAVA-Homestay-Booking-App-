@@ -1,15 +1,13 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
-
 <head>
     <meta charset="UTF-8">
-    <title>Danh sách người dùng</title>
+    <title>Quản lý người dùng</title>
     <link rel="stylesheet" href="/assets/vendor/css/core.css">
     <link rel="stylesheet" href="/assets/vendor/css/theme-default.css">
     <link rel="stylesheet" href="/assets/css/demo.css">
     <script src="/assets/vendor/js/helpers.js"></script>
 </head>
-
 <body>
 <div class="layout-wrapper">
     <div class="layout-container">
@@ -17,7 +15,7 @@
         <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
             <div class="app-brand demo">
                 <a href="/admin/dashboard" class="app-brand-link">
-                    <span class="app-brand-logo demo"><img src="/assets/img/favicon/logo_1.png" style="border-radius: 75%;" width="52" alt="Logo"></span>
+                    <span class="app-brand-logo demo"><img src="/assets/img/favicon/logo_1.png" width="52"></span>
                     <span class="app-brand-text demo menu-text fw-bold">Booking Admin</span>
                 </a>
             </div>
@@ -42,29 +40,31 @@
         <div class="layout-page">
             <div class="content-wrapper">
                 <div class="container-xxl flex-grow-1 container-p-y">
-                    <h4 class="fw-bold py-3 mb-4">Danh sách người dùng</h4>
+                    <h4 class="fw-bold py-3 mb-4">Quản lý người dùng</h4>
 
                     <div class="card">
                         <div class="table-responsive text-nowrap">
-                            <table class="table">
+                            <table class="table table-striped">
                                 <thead>
                                 <tr>
                                     <th>ID</th>
                                     <th>Tên</th>
                                     <th>Email</th>
                                     <th>Vai trò</th>
-                                    <th>Hành động</th>
+                                    <th>Thao tác</th>
                                 </tr>
                                 </thead>
                                 <tbody class="table-border-bottom-0">
                                 <tr th:each="user : ${users}">
                                     <td th:text="${user.id}">1</td>
                                     <td th:text="${user.name}">Nguyễn Văn A</td>
-                                    <td th:text="${user.email}">a@example.com</td>
+                                    <td th:text="${user.email}">a@gmail.com</td>
                                     <td th:text="${user.role}">USER</td>
                                     <td>
-                                        <a th:href="@{'/admin/users/delete/' + ${user.id}}" class="btn btn-sm btn-danger"
-                                           onclick="return confirm('Bạn có chắc muốn xóa người dùng này?');">Xóa</a>
+                                        <a th:href="@{'/admin/users/edit/' + ${user.id}}" class="btn btn-sm btn-primary me-2">Sửa</a>
+                                        <a th:href="@{'/admin/users/delete/' + ${user.id}}"
+                                           onclick="return confirm('Bạn có chắc muốn xóa người dùng này?')"
+                                           class="btn btn-sm btn-danger">Xóa</a>
                                     </td>
                                 </tr>
                                 </tbody>
