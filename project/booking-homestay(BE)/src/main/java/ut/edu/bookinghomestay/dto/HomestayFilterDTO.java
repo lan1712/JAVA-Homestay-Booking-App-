@@ -12,7 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class HomestayFilterDTO {
-    
+
     private String keyword;
     private List<Long> amenityIds;
     private Double minPrice;

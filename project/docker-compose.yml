@@ -1,0 +1,104 @@
+version: '3.8'
+
+services:
+  # MySQL Database
+  db:
+    image: mysql:8.0
+    container_name: homestay-db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    ports:
+      - "3309:3306"  # Chỉ expose cổng 3309 khi dev
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./sql/good_place_travel_db.sql:/docker-entrypoint-initdb.d/01-schema.sql
+      - ./sql/good_place_travel_data.sql:/docker-entrypoint-initdb.d/02-data.sql
+      - ./sql/good_place_travel_images.sql:/docker-entrypoint-initdb.d/03-images.sql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "${MYSQL_USER}", "-p${MYSQL_PASSWORD}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - homestay-network
+
+  # Spring Boot Backend
+  backend:
+    build:
+      context: ./booking-homestay(BE)  # Đường dẫn đến thư mục chứa Dockerfile backend
+      dockerfile: ../Dockerfile.backend
+    container_name: homestay-backend
+    restart: always
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/${MYSQL_DATABASE}?useSSL=false&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: ${MYSQL_USER}
+      SPRING_DATASOURCE_PASSWORD: ${MYSQL_PASSWORD}
+      SPRING_JPA_HIBERNATE_DDL_AUTO: validate
+      SPRING_JPA_SHOW_SQL: "false"
+      SPRING_SERVLET_MULTIPART_MAX_FILE_SIZE: 10MB
+      SPRING_SERVLET_MULTIPART_MAX_REQUEST_SIZE: 10MB
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_EXPIRATION: 86400000
+      UPLOAD_DIR: /app/uploads
+    ports:
+      - "8080:8080"  # Expose ra host để dev (qua localhost:8080)
+    volumes:
+      - uploads-data:/app/uploads
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - homestay-network
+
+  # Next.js Frontend
+  frontend:
+    build:
+      context: ./frontend  # Đường dẫn đến thư mục chứa Dockerfile frontend
+      dockerfile: ../Dockerfile.frontend #
+      args:
+        NEXT_PUBLIC_API_URL: http://localhost:8080/api
+    container_name: homestay-frontend
+    restart: always
+    depends_on:
+      backend:
+        condition: service_healthy
+    environment:
+      NEXT_PUBLIC_API_URL: http://localhost:8080/api
+    ports:
+      - "3000:3000"  # Expose ra host để dev (localhost:3000)
+    networks:
+      - homestay-network
+
+  # Nginx Reverse Proxy (chỉ thực sự cần cho production)
+  nginx:
+    image: nginx:alpine
+    container_name: homestay-nginx
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./ssl:/etc/nginx/ssl
+    depends_on:
+      - frontend
+      - backend
+    networks:
+      - homestay-network
+
+networks:
+  homestay-network:
+    driver: bridge
+
+volumes:
+  mysql-data:
+  uploads-data:
