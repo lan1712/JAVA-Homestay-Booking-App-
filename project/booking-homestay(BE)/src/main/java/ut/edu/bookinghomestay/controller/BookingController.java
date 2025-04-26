@@ -72,4 +72,3 @@ public class BookingController {
         return ResponseEntity.ok(bookingRepository.findByUser(user));
     }
 }
-

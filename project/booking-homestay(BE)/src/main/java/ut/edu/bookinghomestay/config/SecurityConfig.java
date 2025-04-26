@@ -32,7 +32,7 @@ public class SecurityConfig {
                         .requestMatchers("/assets/**", "/admin/**", "/").permitAll() // Cho phép truy cập giao diện
                         .anyRequest().authenticated()
                 );
-                //.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class); // KHÔNG dùng formLogin nếu dùng JWT
+        //.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class); // KHÔNG dùng formLogin nếu dùng JWT
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
